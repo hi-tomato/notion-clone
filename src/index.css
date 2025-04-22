@@ -1,5 +1,34 @@
 @import 'tailwindcss';
 
+:root {
+  --bg: #ffffff;
+  --bg-sidebar: #f4f4f4;
+  --text: #1e1f25;
+  --text-sub: #4f4f4f;
+  --accent-blue: #377dff;
+  --accent-green: #58c472;
+  --accent-orange: #f1a60d;
+  --accent-red: #ef5c5c;
+}
+
+body.dark-mode {
+  --bg: #1e1f25;
+  --bg-sidebar: #26272e;
+  --text: #e0e0e0;
+  --text-sub: #a0a0a0;
+  --accent-blue: #377dff;
+  --accent-green: #58c472;
+  --accent-orange: #f1a60d;
+  --accent-red: #ef5c5c;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
 button {
   cursor: pointer;
 }
