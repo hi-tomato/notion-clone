@@ -21,13 +21,12 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route path="/login" element={<Login />} />
         <Route path="/" element={<Dashboard />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/workspace/:workspaceId" element={<WorkspacePage />} />
         <Route path="/doc/:docId" element={<DocumentPage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
-    <App />
   </StrictMode>
 );
