@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   FaHome,
   FaChartBar,
@@ -13,13 +13,14 @@ import {
 } from 'react-icons/fa';
 import useAuthStore from '@/store/authStore';
 import useThemeStore from '@/store/themeStore';
-
+import useDarkModeToggle from '@/hooks/useDarkModeToggle';
 const Sidebar = () => {
   const user = useAuthStore((state) => state.user);
   const login = useAuthStore((state) => state.login);
   const logout = useAuthStore((state) => state.logout);
   const { darkMode, toggleDarkMode } = useThemeStore();
 
+  // menuItems 수정
   const menuItems = [
     { icon: <FaHome />, label: '대시보드', path: '/' },
     { icon: <FaChartBar />, label: '분석', path: '/analytics' },
@@ -40,13 +41,8 @@ const Sidebar = () => {
     },
   ];
 
-  useEffect(() => {
-    if (darkMode) {
-      document.body.classList.add('dark-mode');
-    } else {
-      document.body.classList.remove('dark-mode');
-    }
-  }, [darkMode]);
+  // 🚀 useDarkModeToggle - useEffect Hook
+  useDarkModeToggle();
 
   return (
     <div className="flex flex-col h-full py-6">
