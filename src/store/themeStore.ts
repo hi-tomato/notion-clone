@@ -7,12 +7,13 @@ interface ThemeMode {
 }
 
 const useThemeStore = create(
-  persist(
+  persist<ThemeMode>(
     (set) => ({
       darkMode: false,
       toggleDarkMode: () => set((state) => ({ darkMode: !state.darkMode })),
     }),
     {
+      name: 'theme-storage',
       storage: createJSONStorage(() => localStorage),
     }
   )
