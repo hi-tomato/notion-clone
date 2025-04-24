@@ -1,10 +1,5 @@
 import useTodoStore from '@/store/todoStore';
-import {
-  TodoCategory,
-  TodoItem,
-  TodoPriority,
-  TodoStatus,
-} from '@/types/todo-type';
+import { TodoCategory, TodoPriority, TodoStatus } from '@/types/todo-type';
 import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 

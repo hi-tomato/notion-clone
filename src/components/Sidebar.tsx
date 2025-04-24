@@ -70,7 +70,7 @@ const Sidebar = () => {
               {item.onClick ? (
                 <button
                   onClick={item.onClick}
-                  className="flex items-center w-full px-4 py-3 text-gray-700 rounded-md hover:bg-gray-100 hover:text-blue-600 transition-colors"
+                  className="flex items-center w-full px-4 py-3 text-gray-400 rounded-md hover:bg-gray-100 hover:text-blue-600 transition-colors"
                 >
                   <span className="mr-3">{item.icon}</span>
                   {item.label}
@@ -78,7 +78,7 @@ const Sidebar = () => {
               ) : (
                 <a
                   href={item.path}
-                  className="flex items-center px-4 py-3 text-gray-700 rounded-md hover:bg-gray-100 hover:text-blue-600 transition-colors"
+                  className="flex items-center px-4 py-3 text-gray-400 rounded-md hover:bg-gray-100 hover:text-blue-600 transition-colors"
                 >
                   <span className="mr-3">{item.icon}</span>
                   {item.label}

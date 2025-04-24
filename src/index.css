@@ -9,17 +9,52 @@
   --accent-green: #58c472;
   --accent-orange: #f1a60d;
   --accent-red: #ef5c5c;
+
+  /* 추가 변수들 */
+  --header-bg: #ffffff;
+  --header-border: #e5e7eb;
+  --card-bg: #ffffff;
+  --card-border: #e5e7eb;
+  --card-shadow: rgba(0, 0, 0, 0.05);
+  --column-bg: #f3f4f6;
+  --column-header-bg: #f9fafb;
+  --hover-bg: #f3f4f6;
+  --icon-color: #4b5563;
+  --icon-hover: #f3f4f6;
+  --todo-column: #dbeafe;
+  --progress-column: #fef3c7;
+  --done-column: #d1fae5;
+  --empty-text: #9ca3af;
+  --button-primary-bg: var(--accent-blue);
+  --button-primary-text: #ffffff;
 }
 
 body.dark-mode {
-  --bg: #1e1f25;
-  --bg-sidebar: #26272e;
-  --text: #e0e0e0;
-  --text-sub: #a0a0a0;
-  --accent-blue: #377dff;
-  --accent-green: #58c472;
-  --accent-orange: #f1a60d;
-  --accent-red: #ef5c5c;
+  --bg: #1c1e26; /* 좀 더 깊은 블랙톤 */
+  --bg-sidebar: #1a1c23;
+  --text: #d1d5db;
+  --text-sub: #9ca3af;
+
+  --header-bg: #1c1e26;
+  --header-border: #2c2f36;
+
+  --card-bg: #21232b;
+  --card-border: #2c2f36;
+  --card-shadow: rgba(0, 0, 0, 0.4);
+
+  --column-bg: #1f2129;
+  --column-header-bg: #2b2d36;
+
+  --hover-bg: #2c2f36;
+
+  --icon-color: #9ca3af;
+  --icon-hover: #2c2f36;
+
+  --todo-column: #2c3e50;
+  --progress-column: #7f5f1b;
+  --done-column: #1a4532;
+
+  --empty-text: #6b7280;
 }
 
 body {
@@ -31,4 +66,74 @@ body {
 
 button {
   cursor: pointer;
+}
+
+/* 헤더 스타일 */
+.app-header {
+  background-color: var(--header-bg);
+  color: var(--text);
+  border-bottom: 1px solid var(--header-border);
+  transition: background-color 0.3s ease, color 0.3s ease,
+    border-color 0.3s ease;
+}
+
+/* 검색 입력 스타일 */
+.search-input {
+  background-color: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--card-border);
+}
+
+/* 아이콘 버튼 스타일 */
+.icon-button {
+  color: var(--icon-color);
+}
+
+.icon-button:hover {
+  background-color: var(--icon-hover);
+}
+
+/* 칸반 칼럼 스타일 */
+.kanban-column {
+  background-color: var(--column-bg);
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px var(--card-shadow);
+}
+
+.kanban-column-header {
+  background-color: var(--column-header-bg);
+  color: var(--text);
+  border-bottom: 1px solid var(--card-border);
+}
+
+.kanban-column-todo .kanban-column-header {
+  background-color: var(--todo-column);
+}
+
+.kanban-column-inProgress .kanban-column-header {
+  background-color: var(--progress-column);
+}
+
+.kanban-column-done .kanban-column-header {
+  background-color: var(--done-column);
+}
+
+/* 투두 카드 스타일 */
+.todo-card {
+  background-color: var(--card-bg);
+  color: var(--text);
+  border: 1px solid var(--card-border);
+  box-shadow: 0 1px 2px var(--card-shadow);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.todo-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px var(--card-shadow);
+}
+
+/* 빈 상태 메시지 */
+.empty-state {
+  color: var(--empty-text);
+  border: 2px dashed var(--card-border);
 }
