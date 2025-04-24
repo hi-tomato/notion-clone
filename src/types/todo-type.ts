@@ -10,6 +10,7 @@ export interface TodoItem {
   priority: TodoPriority;
   category: TodoCategory;
   createdAt: Date;
+  progress?: number;
 }
 
 export interface NewTodoInput {
@@ -20,6 +21,7 @@ export interface NewTodoInput {
   priority: TodoPriority;
   category: TodoCategory;
   createdAt: Date;
+  progress?: number;
 }
 
 export interface TodoUpdateInput {
@@ -28,4 +30,6 @@ export interface TodoUpdateInput {
   status?: TodoStatus;
   priority?: TodoPriority;
   category?: TodoCategory;
+  progress?: number;
+  createdAt?: Date;
 }

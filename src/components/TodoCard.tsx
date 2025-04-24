@@ -1,71 +1,90 @@
-import useTodoStore from '@/store/todoStore';
-import { TodoItem } from '@/types/todo-type';
 import React, { useState } from 'react';
+import { TodoItem } from '@/types/todo-type';
+import useTodoStore from '@/store/todoStore';
+import Editor from './IsEditor';
+import { BiEdit, BiTrash } from 'react-icons/bi';
+import { formatDate } from '@/utils/formatDate';
+import {
+  getProgressColor,
+  getTodoUpdateByProgress,
+} from '@/utils/getProgressColor';
 
 interface TodoCardProps {
   todo: TodoItem;
 }
 
 const TodoCard = ({ todo }: TodoCardProps) => {
-  const { updateTodo, deleteTodo } = useTodoStore();
   const [isEditing, setIsEditing] = useState(false);
-  const [editTitle, setEditTitle] = useState(todo.title);
-  const handleSave = () => {
-    if (editTitle.trim()) {
-      updateTodo(todo.id, { title: editTitle });
-      setIsEditing(false);
-    }
+  const deleteTodo = useTodoStore((state) => state.deleteTodo);
+  const updateTodo = useTodoStore((state) => state.updateTodo);
+  const [progress, setProgress] = useState(todo.progress || 0);
+
+  const handleProgressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newProgress = parseInt(e.target.value);
+    setProgress(newProgress);
+
+    const updatedData = getTodoUpdateByProgress(todo, newProgress);
+    updateTodo(todo.id, updatedData);
   };
 
-  if (isEditing) {
-    return (
-      <div>
-        <input
-          type="text"
-          value={editTitle}
-          onChange={(e) => setEditTitle(e.target.value)}
-          autoFocus
-        />
-        <div className="flex justify-end space-x-2">
-          <button
-            onClick={() => {
-              setIsEditing(false);
-              setEditTitle(todo.title);
-            }}
-            className="px-2 py-1 text-xs bg-gray-200 rounded"
-          >
-            취소
-          </button>
-          <button
-            onClick={handleSave}
-            className="px-2 py-1 text-xs bg-blue-500 text-white rounded"
-          >
-            저장
-          </button>
-        </div>
-      </div>
-    );
-  }
+  const handleCancelEdit = () => setIsEditing(false);
+
+  if (isEditing) return <Editor todo={todo} onCancel={handleCancelEdit} />;
 
   return (
-    <div>
-      <div className="flex">
-        <h4>{todo.title}</h4>
-        <span>{todo.category}</span>
-        <span>{todo.priority}</span>
+    <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-md">
+      <div className="flex flex-col">
+        <h4 className="text-4xl font-semibold mb-2 text-gray-800 dark:text-white">
+          {todo.title}
+        </h4>
       </div>
 
-      <div>
-        {todo.description && (
-          <p className="text-bold text-gray-600 mb-2">{todo.description}</p>
-        )}
-      </div>
+      {todo.description && (
+        <p className="text-2xl text-gray-600 dark:text-gray-400 mb-3 line-clamp-2">
+          {todo.description}
+        </p>
+      )}
 
-      <div>
-        <div>
-          <button onClick={() => setIsEditing(true)}>수정하기</button>
-          <button onClick={() => deleteTodo(todo.id)}>삭제하기</button>
+      <div className="w-full mb-3">
+        <div className="flex justify-between text-xs mb-1">
+          <span className="text-gray-400">Progress</span>
+          <span className="text-gray-400">{progress}/10</span>
         </div>
+        <div className="flex items-center">
+          <input
+            type="range"
+            min="0"
+            max="10"
+            value={progress}
+            onChange={handleProgressChange}
+            className="w-full h-1 bg-gray-700 rounded-full appearance-none cursor-pointer transition-all duration-500 ease-in-out"
+            style={{
+              background: `linear-gradient(to right, ${getProgressColor(
+                progress
+              )} 0%, ${getProgressColor(progress)} ${progress * 10}%, #374151 ${
+                progress * 10
+              }%, #374151 100%)`,
+            }}
+          />
+        </div>
+      </div>
+
+      <div className="flex justify-end space-x-2 mt-3">
+        <button>{formatDate(todo.createdAt)}</button>
+        <button
+          className="px-2 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded transition-colors duration-200 flex items-center"
+          onClick={() => setIsEditing(true)}
+        >
+          <BiEdit className="mr-1 text-sm" />
+          수정
+        </button>
+        <button
+          className="px-2 py-1.5 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-red-600 text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white text-xs font-medium rounded transition-colors duration-200 flex items-center"
+          onClick={() => deleteTodo(todo.id)}
+        >
+          <BiTrash className="mr-1 text-sm" />
+          삭제
+        </button>
       </div>
     </div>
   );
