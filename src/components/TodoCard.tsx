@@ -14,6 +14,13 @@ interface TodoCardProps {
 }
 
 const TodoCard = ({ todo }: TodoCardProps) => {
+  const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
+    // 드래그되는 카드의 ID를 dataTransfer에 저장
+    e.dataTransfer.setData('todoId', todo.id);
+    // 드래그 효과 설정
+    e.dataTransfer.effectAllowed = 'move';
+  };
+
   const [isEditing, setIsEditing] = useState(false);
   const deleteTodo = useTodoStore((state) => state.deleteTodo);
   const updateTodo = useTodoStore((state) => state.updateTodo);
@@ -32,7 +39,11 @@ const TodoCard = ({ todo }: TodoCardProps) => {
   if (isEditing) return <Editor todo={todo} onCancel={handleCancelEdit} />;
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-md">
+    <div
+      className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-md"
+      draggable="true"
+      onDragStart={handleDragStart}
+    >
       <div className="flex flex-col">
         <h4 className="text-4xl font-semibold mb-2 text-gray-800 dark:text-white">
           {todo.title}

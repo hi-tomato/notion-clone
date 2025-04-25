@@ -1,5 +1,6 @@
 import TodoCard from '@/components/TodoCard';
-import { TodoItem } from '@/types/todo-type';
+import useTodoStore from '@/store/todoStore';
+import { TodoItem, TodoStatus } from '@/types/todo-type';
 import React from 'react';
 import { BiPlus } from 'react-icons/bi';
 
@@ -11,8 +12,30 @@ interface KanbanColumnProps {
 }
 
 const KanbanColumn = ({ title, status, items, color }: KanbanColumnProps) => {
+  const todos = useTodoStore((state) => state.todos);
+  const updateTodo = useTodoStore((state) => state.updateTodo);
+
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    const todoID = e.dataTransfer.getData('todoId');
+
+    const draggedTodo = todos.find((t) => t.id === todoID);
+    if (draggedTodo && draggedTodo.status !== status) {
+      updateTodo(todoID, { status: status as TodoStatus });
+    }
+  };
+
   return (
-    <div className="flex flex-col h-full rounded-lg overflow-hidden">
+    <div
+      className="flex flex-col h-full rounded-lg overflow-hidden"
+      onDragOver={handleDragOver}
+      onDrop={handleDrop}
+    >
       <div className={`${color} px-4 py-3`}>
         <div className="flex justify-between items-center mb-2">
           <h3 className="font-medium text-gray-200">{title}</h3>
