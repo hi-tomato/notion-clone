@@ -30,25 +30,25 @@
 }
 
 body.dark-mode {
-  --bg: #1c1e26; /* 좀 더 깊은 블랙톤 */
-  --bg-sidebar: #1a1c23;
+  --bg: #141417; /* 콘텐츠 영역 */
+  --bg-sidebar: #1e1e24; /* 사이드바 - 가장 어두운 톤 */
   --text: #d1d5db;
   --text-sub: #9ca3af;
 
-  --header-bg: #1c1e26;
+  --header-bg: #2a2a31; /* 상단 헤더 - 콘텐츠 영역과 통일 */
   --header-border: #2c2f36;
 
-  --card-bg: #21232b;
+  --card-bg: #33333d; /* 작업 카드 내부 - 더 밝은 회색 톤 */
   --card-border: #2c2f36;
   --card-shadow: rgba(0, 0, 0, 0.4);
 
-  --column-bg: #1f2129;
-  --column-header-bg: #2b2d36;
+  --column-bg: #2a2a31; /* 콘텐츠 영역과 통일 */
+  --column-header-bg: #33333d; /* 카드와 비슷한 톤 */
 
-  --hover-bg: #2c2f36;
+  --hover-bg: #33333d;
 
   --icon-color: #9ca3af;
-  --icon-hover: #2c2f36;
+  --icon-hover: #33333d;
 
   --todo-column: #2c3e50;
   --progress-column: #7f5f1b;
@@ -101,7 +101,7 @@ button {
 }
 
 .kanban-column-header {
-  background-color: var(--column-header-bg);
+  /* background-color: var(--column-header-bg); */
   color: var(--text);
   border-bottom: 1px solid var(--card-border);
 }
