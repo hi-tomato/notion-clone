@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   FaHome,
-  FaChartBar,
   FaCalendarAlt,
   FaCog,
   FaUsers,
@@ -14,6 +13,7 @@ import {
 import useAuthStore from '@/store/authStore';
 import useThemeStore from '@/store/themeStore';
 import useDarkModeToggle from '@/hooks/useDarkModeToggle';
+import { FaPencil } from 'react-icons/fa6';
 const Sidebar = () => {
   const user = useAuthStore((state) => state.user);
   const login = useAuthStore((state) => state.login);
@@ -23,7 +23,7 @@ const Sidebar = () => {
   // menuItems 수정
   const menuItems = [
     { icon: <FaHome />, label: '대시보드', path: '/' },
-    { icon: <FaChartBar />, label: '분석', path: '/analytics' },
+    { icon: <FaPencil />, label: 'Diary', path: '/Diary' },
     { icon: <FaCalendarAlt />, label: '캘린더', path: '/calendar' },
     { icon: <FaUsers />, label: '사용자', path: '/users' },
     { icon: <FaFolder />, label: '문서', path: '/documents' },

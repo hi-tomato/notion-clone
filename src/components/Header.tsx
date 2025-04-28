@@ -7,7 +7,6 @@ import { FaCalendarAlt, FaBell } from 'react-icons/fa';
 const Header = () => {
   const user = useAuthStore((state) => state.user);
   const initAuth = useAuthStore((state) => state.initAuth);
-  // const { darkMode } = useThemeStore();
   const handleSearch = (query: string) => {
     console.log('Searching for:', query);
   };

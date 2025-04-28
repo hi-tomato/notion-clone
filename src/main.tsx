@@ -2,11 +2,12 @@ import React, { ReactNode, StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Login from '@/pages/Login.tsx';
+// import Login from '@/pages/Login.tsx';
 import Dashboard from '@/pages/Dashboard.tsx';
 import WorkspacePage from '@/pages/WorkspacePage.tsx';
 import DocumentPage from '@/pages/DocumentPage.tsx';
 import NotFound from '@/pages/NotFound.tsx';
+import Diary from '@/components/Diary';
 
 interface ProtectedRouteProps {
   children: ReactNode;
@@ -21,7 +22,7 @@ createRoot(document.getElementById('root')!).render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Dashboard />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/diary" element={<Diary />} />
         <Route path="/workspace/:workspaceId" element={<WorkspacePage />} />
         <Route path="/doc/:docId" element={<DocumentPage />} />
         <Route path="*" element={<NotFound />} />
