@@ -1,3 +1,9 @@
+import {
+  TodoCategory,
+  TodoItem,
+  TodoPriority,
+  TodoStatus,
+} from '@/types/todo-type';
 import { FirebaseError, initializeApp } from 'firebase/app';
 import {
   getAuth,
@@ -8,6 +14,15 @@ import {
   Unsubscribe,
   User,
 } from 'firebase/auth';
+import {
+  getFirestore,
+  collection,
+  doc,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  getDocs,
+} from 'firebase/firestore';
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -53,4 +68,91 @@ export const onUserStateChange = (
   return onAuthStateChanged(auth, (user) => {
     callback(user);
   });
+};
+
+// Firebase Utility Function
+const db = getFirestore(app);
+type TodoUpdateData = {
+  // Firestore 업데이트용 타입
+  [key: string]: void;
+};
+
+export const todosCollection = collection(db, 'todos');
+
+export const addTodoDocument = async (data: TodoItem) => {
+  console.log('Adding todo with data:', data);
+  try {
+    const docRef = await addDoc(todosCollection, data);
+    console.log('Document added with ID:', docRef.id);
+    return docRef;
+  } catch (error) {
+    console.error('Error adding document:', error);
+    throw error;
+  }
+};
+
+export const getTodoDocument = async (): Promise<TodoItem[]> => {
+  console.log('서버 데이터 찾아보기...');
+  try {
+    const querySnapshot = await getDocs(todosCollection);
+    console.log('서버데이터 스냅샷:', querySnapshot);
+
+    const todos: TodoItem[] = [];
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+
+      const createdAtField = data.createdAt;
+      let createdAt: Date;
+      if (createdAtField?.toDate) {
+        createdAt = createdAtField.toDate();
+      } else if (typeof createdAtField === 'string') {
+        createdAt = new Date(createdAtField);
+      } else if (createdAtField instanceof Date) {
+        createdAt = createdAtField;
+      } else {
+        createdAt = new Date();
+      }
+
+      const todoItem: TodoItem = {
+        id: doc.id,
+        title: data.title as string,
+        description: data.description as string,
+        status: data.status as TodoStatus,
+        priority: data.priority as TodoPriority,
+        category: data.category as TodoCategory,
+        createdAt: createdAt,
+        progress: data.progress ?? 0,
+        order: data.order ?? 0,
+      };
+      todos.push(todoItem);
+    });
+    console.log('Processed todos:', todos);
+
+    return todos;
+  } catch (error) {
+    console.error('서버에서 데이터 받는데 문제가 생김', error);
+    throw error;
+  }
+};
+
+export const updateTodoDocument = async (
+  id: string,
+  data: TodoUpdateData
+): Promise<void> => {
+  console.log('Updating todo with ID:', id);
+  console.log('Update data:', data);
+
+  try {
+    const docRef = doc(todosCollection, id);
+    const result = await updateDoc(docRef, data);
+    console.log('Update successful');
+    return result;
+  } catch (error) {
+    console.error('Error updating document:', error);
+    throw error;
+  }
+};
+
+export const deleteTodoDocument = async (id: string) => {
+  return await deleteDoc(doc(todosCollection, id));
 };
