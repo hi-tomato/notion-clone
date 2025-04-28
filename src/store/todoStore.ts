@@ -5,9 +5,13 @@ import { NewTodoInput, TodoItem, TodoUpdateInput } from '@/types/todo-type';
 
 interface TodoStore {
   todos: TodoItem[];
+  dragOverItemId?: string | null;
+
   addTodo: (todo: NewTodoInput) => void;
   updateTodo: (id: string, todo: TodoUpdateInput) => void;
   deleteTodo: (id: string) => void;
+  setDragOverItemId: (id: string | null) => void;
+  updateTodoOrder: (updates: { id: string; order: number }[]) => void;
 }
 
 const useTodoStore = create<TodoStore>()(
@@ -34,7 +38,20 @@ const useTodoStore = create<TodoStore>()(
         set((state) => ({
           todos: state.todos.filter((t) => t.id !== id),
         })),
+
+      //🚀 [Drag&Drop Refactor]
+      // dragOverItem 타입을 추가해줘야함.
+      setDragOverItemId: (id) => set({ dragOverItemId: id }),
+
+      updateTodoOrder: (updates) =>
+        set((state) => ({
+          todos: state.todos.map((todo) => {
+            const update = updates.find((u) => u.id === todo.id);
+            return update ? { ...todo, order: update.order } : todo;
+          }),
+        })),
     }),
+
     {
       name: 'todo-storage', // 로컬 스토리지에 저장될 키 이름
     }

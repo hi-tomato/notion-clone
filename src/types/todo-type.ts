@@ -11,6 +11,7 @@ export interface TodoItem {
   category: TodoCategory;
   createdAt: Date;
   progress?: number;
+  order?: number;
 }
 
 export interface NewTodoInput {
