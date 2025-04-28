@@ -17,6 +17,7 @@ const TodoCard = ({ todo }: TodoCardProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const deleteTodo = useTodoStore((state) => state.deleteTodo);
   const updateTodo = useTodoStore((state) => state.updateTodo);
+  const { setDragOverItemId } = useTodoStore();
   const [progress, setProgress] = useState(todo.progress || 0);
 
   const handleProgressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -28,9 +29,21 @@ const TodoCard = ({ todo }: TodoCardProps) => {
   };
 
   const handleCancelEdit = () => setIsEditing(false);
+
   const handleDragStart = (e: React.DragEvent) => {
     e.dataTransfer.setData('todoId', todo.id);
     e.dataTransfer.effectAllowed = 'move';
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragOverItemId(todo.id);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
   };
 
   if (isEditing) return <Editor todo={todo} onCancel={handleCancelEdit} />;
@@ -40,6 +53,8 @@ const TodoCard = ({ todo }: TodoCardProps) => {
       className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-md cursor-move"
       draggable={true}
       onDragStart={handleDragStart}
+      onDragOver={handleDragOver}
+      onDragLeave={handleDragLeave}
     >
       <div className="flex flex-col">
         <h4 className="text-4xl font-semibold mb-2 text-gray-800 dark:text-white">

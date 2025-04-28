@@ -1,6 +1,6 @@
 import TodoCard from '@/components/TodoCard';
 import useTodoStore from '@/store/todoStore';
-import { TodoItem } from '@/types/todo-type';
+import { TodoItem, TodoStatus } from '@/types/todo-type';
 import React from 'react';
 import { BiPlus } from 'react-icons/bi';
 interface KanbanColumnProps {
@@ -22,23 +22,23 @@ const KanbanColumn = ({ title, status, items, color }: KanbanColumnProps) => {
     e.preventDefault();
     e.dataTransfer.dropEffect = 'move';
   };
-
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     const todoId = e.dataTransfer.getData('todoId');
-    console.log('Clicked TODO_ID: ' + todoId);
     const draggedTodo = todos.find((t) => t.id === todoId);
-    console.log('선택된 투두: ' + draggedTodo);
-
     // Early Return: 드래그된 투두가 없을 땐, handleDrop 함수 종료
     if (!draggedTodo) return;
-
     // 다른 컬럼에 있는 투두를 가져올 때,
     if (draggedTodo.status !== status) {
-      updateTodo(todoId, { status: status });
-    } else if (dragOverItemId && dragOverItemId !== todoId) {
+      updateTodo(todoId, { status: status as TodoStatus });
+    }
+
+    if (dragOverItemId && dragOverItemId !== todoId) {
       // dragOverItemId && dragOverItemId !== todoId (다른 열에서 투두를 가져올 때)
-      const columnItems = todos.filter((t) => t.status === status);
+      const columnItems = todos
+        .filter((t) => t.status === status)
+        .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+
       const draggedIndex = columnItems.findIndex((item) => item.id === todoId);
       const targetIndex = columnItems.findIndex(
         (item) => item.id === dragOverItemId
@@ -63,6 +63,10 @@ const KanbanColumn = ({ title, status, items, color }: KanbanColumnProps) => {
     setDragOverItemId(null);
   };
 
+  const sortedItems = [...items].sort(
+    (a, b) => (a.order ?? 0) - (b.order ?? 0)
+  );
+
   return (
     <div
       className="flex flex-col h-full rounded-lg overflow-hidden"
@@ -81,12 +85,12 @@ const KanbanColumn = ({ title, status, items, color }: KanbanColumnProps) => {
       </div>
 
       <div className="p-3 space-y-3 bg-gray-800 flex-grow">
-        {items.length === 0 ? (
+        {sortedItems.length === 0 ? (
           <div className="text-center text-gray-400 py-4 text-sm">
             표시할 항목이 없습니다.
           </div>
         ) : (
-          items.map((item) => (
+          sortedItems.map((item) => (
             <div key={item.id}>
               <TodoCard todo={item} />
             </div>
