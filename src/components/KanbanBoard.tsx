@@ -9,6 +9,7 @@ const KanbanBoard = () => {
   const getTodos = useTodoStore((state) => state.getTodos);
 
   const columns = useMemo(() => createKanbanColumns(todos), [todos]);
+
   useEffect(() => {
     getTodos();
   }, [getTodos]);

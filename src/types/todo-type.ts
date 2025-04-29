@@ -9,7 +9,7 @@ export interface TodoItem {
   status: TodoStatus;
   priority: TodoPriority;
   category: TodoCategory;
-  createdAt: Date;
+  createdAt: Date | string;
   progress?: number;
   order?: number;
 }
@@ -26,11 +26,16 @@ export interface NewTodoInput {
 }
 
 export interface TodoUpdateInput {
+  id?: string;
   title?: string;
   description?: string;
   status?: TodoStatus;
   priority?: TodoPriority;
   category?: TodoCategory;
+  createdAt?: Date | string; // Date 또는 string 허용
   progress?: number;
-  createdAt?: Date;
+  order?: number;
+  // 인덱스 시그니처 추가
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any;
 }

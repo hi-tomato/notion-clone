@@ -3,6 +3,8 @@ import SearchInput from '@/components/SearchInput';
 import useAuthStore from '@/store/authStore';
 // import useThemeStore from '@/store/themeStore';
 import { FaCalendarAlt, FaBell } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+import Button from '@/components/ui/Button';
 
 const Header = () => {
   const user = useAuthStore((state) => state.user);
@@ -23,7 +25,7 @@ const Header = () => {
       <div className="flex justify-between items-center">
         <div className="hidden md:block">
           <h1 className="text-xl md:text-2xl font-bold">
-            Welcome back, Developer 👋
+            <Link to="/">Welcome back, Developer 👋</Link>
           </h1>
         </div>
 
@@ -36,19 +38,19 @@ const Header = () => {
             <SearchInput onSubmit={handleSearch} />
           </div>
 
-          <button
+          <Button
             type="button"
             className="icon-button p-2 rounded-full transition-colors"
           >
             <FaCalendarAlt />
-          </button>
+          </Button>
 
-          <button
+          <Button
             type="button"
             className="icon-button p-2 rounded-full transition-colors"
           >
             <FaBell />
-          </button>
+          </Button>
 
           {user && (
             <div className="hidden md:flex items-center space-x-2">

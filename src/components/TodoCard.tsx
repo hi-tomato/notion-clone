@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TodoItem } from '@/types/todo-type';
+import { TodoItem, TodoUpdateInput } from '@/types/todo-type';
 import useTodoStore from '@/store/todoStore';
 import Editor from './IsEditor';
 import { BiEdit, BiTrash } from 'react-icons/bi';
@@ -25,7 +25,7 @@ const TodoCard = ({ todo }: TodoCardProps) => {
     setProgress(newProgress);
 
     const updatedData = getTodoUpdateByProgress(todo, newProgress);
-    updateTodo(todo.id, updatedData);
+    updateTodo(todo.id, updatedData as TodoUpdateInput);
   };
 
   const handleCancelEdit = () => setIsEditing(false);
