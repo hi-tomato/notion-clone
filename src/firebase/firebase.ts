@@ -1,3 +1,4 @@
+import { DiaryItem } from '@/types/diary-type';
 import {
   TodoCategory,
   TodoItem,
@@ -73,7 +74,6 @@ export const onUserStateChange = (
 // Firebase Utility Function
 const db = getFirestore(app);
 type TodoUpdateData = {
-  // Firestore 업데이트용 타입
   [key: string]: void;
 };
 
@@ -155,4 +155,34 @@ export const updateTodoDocument = async (
 
 export const deleteTodoDocument = async (id: string) => {
   return await deleteDoc(doc(todosCollection, id));
+};
+
+export const diaryCollection = collection(db, 'diary');
+
+export const getDiaryDocument = async () => {
+  console.log('서버 데이터 찾아보기...');
+
+  try {
+    const querySnapshot = await getDocs(diaryCollection);
+    console.log('서버데이터 스냅샷:', querySnapshot);
+    const diaries: DiaryItem[] = [];
+
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      console.log('Processed todos:', data);
+
+      const diaryItem: DiaryItem = {
+        id: doc.id as string,
+        tags: data.tags as string,
+        markDownText: data.markDownText as string,
+        createdAt: data.createdAt as string | Date,
+      };
+      diaries.push(diaryItem);
+    });
+
+    return diaries;
+  } catch (error) {
+    console.error('서버에서 데이터 받는데 문제가 생김', error);
+    throw error;
+  }
 };

@@ -6,7 +6,16 @@ import { useNavigate } from 'react-router-dom';
 
 const MarkdownEditor: React.FC = () => {
   const navigate = useNavigate();
-  const { markDownText, tags, setMarkDownText, setTags } = useDiaryStore();
+  const {
+    markDownText,
+    tags,
+    setMarkDownText,
+    setTags,
+    saveDiary,
+    showErrorToast,
+    showSuccess,
+    toast,
+  } = useDiaryStore();
 
   const handleInputChange = (event: ChangeEvent<HTMLTextAreaElement>) =>
     setMarkDownText(event.target.value);
@@ -19,6 +28,22 @@ const MarkdownEditor: React.FC = () => {
     setTags(tags);
     navigate('/diary/preview');
     console.log('미리보기 데이터를 보냈습니다.', { markDownText, tags });
+  };
+
+  const handleSaved = async () => {
+    if (markDownText.trim().length === 0 || tags.trim().length === 0) {
+      showErrorToast('내용과 태그를 모두 입력해주세요.');
+      return;
+    }
+    try {
+      await saveDiary();
+      setMarkDownText('');
+      setTags('');
+      showSuccess('오늘의 기록을 저장하였습니다.');
+    } catch (error) {
+      console.error('저장 중 오류가 발생', error);
+      showErrorToast('저장 중 오류가 발생했습니다.');
+    }
   };
 
   return (
@@ -46,7 +71,10 @@ const MarkdownEditor: React.FC = () => {
       </div>
 
       <div className="flex flex-col md:flex-row gap-3 mt-6">
-        <Button className="flex-1 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white font-semibold py-3 md:py-4 px-4 md:px-6 rounded-lg text-base md:text-lg shadow-sm transition-all flex items-center justify-center">
+        <Button
+          className="flex-1 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white font-semibold py-3 md:py-4 px-4 md:px-6 rounded-lg text-base md:text-lg shadow-sm transition-all flex items-center justify-center"
+          onClick={handleSaved}
+        >
           <BiSave className="mr-2" size={20} />
           기록하기
         </Button>
@@ -55,6 +83,18 @@ const MarkdownEditor: React.FC = () => {
           text="미리보기"
           onClick={handlePreview}
         />
+
+        {toast.showSuccess && (
+          <div className="fixed bottom-4 right-4 bg-green-500 text-white px-4 py-3 rounded-lg shadow-lg">
+            {toast.successMessage}
+          </div>
+        )}
+
+        {toast.showError && (
+          <div className="fixed bottom-4 right-4 bg-red-500 text-white px-4 py-3 rounded-lg shadow-lg">
+            {toast.errorMessage}
+          </div>
+        )}
       </div>
     </div>
   );
