@@ -1,110 +1,60 @@
-import React, { useState, ChangeEvent } from 'react'; // ChangeEvent 타입을 가져옵니다.
-import ReactMarkdown from 'react-markdown';
-import rehypeHighlight from 'rehype-highlight';
-import remarkGfm from 'remark-gfm';
+import Button from '@/components/ui/Button';
+import useDiaryStore from '@/store/useDiaryStore';
+import React, { ChangeEvent } from 'react';
+import { BiSave } from 'react-icons/bi';
+import { useNavigate } from 'react-router-dom';
 
 const MarkdownEditor: React.FC = () => {
-  const [markdownText, setMarkdownText] = useState<string>('');
-  const handleInputChange = (event: ChangeEvent<HTMLTextAreaElement>): void => {
-    setMarkdownText(event.target.value);
-  };
-  // Tailwind 클래스를 적용할 커스텀 컴포넌트들 정의
-  const components = {
-    // H1 태그에 Tailwind 클래스 적용
-    h1: ({ node, ...props }) => (
-      <h1 className="text-2xl font-bold mt-6 mb-2" {...props} />
-    ),
-    // H2 태그에 Tailwind 클래스 적용
-    h2: ({ node, ...props }) => (
-      <h2
-        className="text-xl font-semibold mt-5 mb-2 border-b pb-1"
-        {...props}
-      />
-    ),
-    // H3 태그에 Tailwind 클래스 적용
-    h3: ({ node, ...props }) => (
-      <h3 className="text-lg font-semibold mt-4 mb-2" {...props} />
-    ),
-    // P 태그에 Tailwind 클래스 적용
-    p: ({ node, ...props }) => (
-      <p className="mb-4 leading-relaxed" {...props} />
-    ),
-    // A (링크) 태그에 Tailwind 클래스 적용
-    a: ({ node, ...props }) => (
-      <a className="text-blue-600 hover:underline" {...props} />
-    ),
-    // UL (순서 없는 목록) 태그에 Tailwind 클래스 적용
-    ul: ({ node, ...props }) => (
-      <ul className="list-disc list-inside mb-4 pl-5" {...props} />
-    ),
-    // OL (순서 있는 목록) 태그에 Tailwind 클래스 적용
-    ol: ({ node, ...props }) => (
-      <ol className="list-decimal list-inside mb-4 pl-5" {...props} />
-    ),
-    // LI (목록 아이템) 태그에 Tailwind 클래스 적용
-    li: ({ node, ...props }) => <li className="mb-1" {...props} />,
-    // Blockquote 태그에 Tailwind 클래스 적용
-    blockquote: ({ node, ...props }) => (
-      <blockquote
-        className="border-l-4 border-gray-300 pl-4 italic my-4"
-        {...props}
-      />
-    ),
-    // 코드 블록 (pre -> code)
-    // rehypeHighlight와 함께 사용할 때 className, children 등을 prop으로 받게 됩니다.
-    code: ({ node, inline, className, children, ...props }) => {
-      const match = /language-(\w+)/.exec(className || '');
-      // 인라인 코드가 아니고, language 클래스가 있을 경우 (코드 블록인 경우)
-      if (!inline && match) {
-        return (
-          // pre 태그에 Tailwind 클래스 적용
-          <pre
-            className="bg-gray-800 text-white p-4 rounded-md overflow-x-auto my-4"
-            {...props}
-          >
-            {/* code 태그에는 rehype-highlight가 추가한 클래스 유지 및 추가 스타일 (선택 사항) */}
-            {/* children 안에 rehype-highlight가 만든 <span> 태그들이 포함됩니다. */}
-            <code className={className} {...props}>
-              {children}
-            </code>
-          </pre>
-        );
-      }
-      // 인라인 코드인 경우
-      return (
-        // 인라인 코드에 Tailwind 클래스 적용
-        <code
-          className="bg-gray-200 text-red-600 px-1 py-0.5 rounded"
-          {...props}
-        >
-          {children}
-        </code>
-      );
-    },
+  const navigate = useNavigate();
+  const { markDownText, tags, setMarkDownText, setTags } = useDiaryStore();
+
+  const handleInputChange = (event: ChangeEvent<HTMLTextAreaElement>) =>
+    setMarkDownText(event.target.value);
+
+  const handleTagChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setTags(e.target.value);
+
+  const handlePreview = () => {
+    setMarkDownText(markDownText);
+    setTags(tags);
+    navigate('/diary/preview');
+    console.log('미리보기 데이터를 보냈습니다.', { markDownText, tags });
   };
 
   return (
-    <div className="markdown-container">
-      <div className="markdown-input-pane">
-        <h2>Markdown Input</h2>
+    <div className="bg-gray-800 rounded-lg p-6">
+      <div className="mb-6">
         <textarea
-          className="markdown-textarea"
-          value={markdownText}
+          className="w-full p-4 bg-gray-700 text-white rounded-md min-h-64 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          value={markDownText}
           onChange={handleInputChange}
           placeholder="Enter your Markdown here..."
-          rows={10}
-          cols={50}
         />
       </div>
-      <div className="markdown-preview-pane">
-        <h2>Preview</h2>
-        <ReactMarkdown
-          components={components}
-          remarkPlugins={[remarkGfm]}
-          rehypePlugins={[rehypeHighlight]} // 문법 강조 필요시 유지
-        >
-          {markdownText}
-        </ReactMarkdown>
+
+      <div className="mb-4">
+        <label className="block text-gray-400 text-sm mb-2">
+          태그 (쉼표로 구분)
+        </label>
+        <input
+          type="text"
+          value={tags}
+          onChange={handleTagChange}
+          placeholder="javascript, react, css..."
+          className="w-full p-3 bg-gray-700 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 border border-gray-600"
+        />
+      </div>
+
+      <div className="flex flex-col md:flex-row gap-3 mt-6">
+        <Button className="flex-1 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white font-semibold py-3 md:py-4 px-4 md:px-6 rounded-lg text-base md:text-lg shadow-sm transition-all flex items-center justify-center">
+          <BiSave className="mr-2" size={20} />
+          기록하기
+        </Button>
+        <Button
+          className="flex-1 bg-gray-700 hover:bg-gray-600 text-white font-semibold py-3 md:py-4 px-4 md:px-6 rounded-lg border border-gray-600 text-base md:text-lg shadow-sm transition-all"
+          text="미리보기"
+          onClick={handlePreview}
+        />
       </div>
     </div>
   );
