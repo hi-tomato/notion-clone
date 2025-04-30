@@ -12,7 +12,7 @@ interface TodoStore {
   todos: TodoItem[];
   dragOverItemId?: string | null;
 
-  addTodo: (todo: NewTodoInput) => void;
+  addTodo: (todo: NewTodoInput, selectedDate: Date) => void;
   updateTodo: (id: string, todo: TodoUpdateInput) => void;
   deleteTodo: (id: string) => void;
   setDragOverItemId: (id: string | null) => void;
@@ -26,10 +26,13 @@ const useTodoStore = create<TodoStore>()(
     (set) => ({
       todos: [],
 
-      addTodo: async (todo) => {
+      addTodo: async (todo, selectedDate) => {
         const newTodo = {
           ...todo,
           createdAt: new Date().toISOString(),
+          dueDate: selectedDate
+            ? selectedDate.toISOString()
+            : new Date().toISOString(),
         };
 
         try {

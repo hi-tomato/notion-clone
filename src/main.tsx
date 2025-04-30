@@ -7,6 +7,7 @@ import NotFound from '@/pages/NotFound.tsx';
 import Diary from '@/components/Diary';
 import Layout from '@/components/Layout';
 import DiaryPreview from '@/components/DiaryPreview';
+import Calendar from '@/pages/Calendar';
 
 // interface ProtectedRouteProps {
 //   children: ReactNode;
@@ -24,6 +25,7 @@ createRoot(document.getElementById('root')!).render(
           <Route index element={<Dashboard />} />
           <Route path="/diary" element={<Diary />} />
           <Route path="/diary/preview" element={<DiaryPreview />} />
+          <Route path="/calendar" element={<Calendar />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />

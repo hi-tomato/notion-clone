@@ -23,7 +23,7 @@ const Sidebar = () => {
   // menuItems 수정
   const menuItems = [
     { icon: <FaHome />, label: '대시보드', path: '/' },
-    { icon: <FaPencil />, label: 'Diary', path: '/Diary' },
+    { icon: <FaPencil />, label: 'TIL', path: '/diary' },
     { icon: <FaCalendarAlt />, label: '캘린더', path: '/calendar' },
     { icon: <FaUsers />, label: '사용자', path: '/users' },
     { icon: <FaFolder />, label: '문서', path: '/documents' },
