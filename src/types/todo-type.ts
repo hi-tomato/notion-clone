@@ -10,6 +10,7 @@ export interface TodoItem {
   priority: TodoPriority;
   category: TodoCategory;
   createdAt: Date | string;
+  dueDate?: Date | string;
   progress?: number;
   order?: number;
 }
