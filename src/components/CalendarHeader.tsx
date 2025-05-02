@@ -1,7 +1,7 @@
 import React from 'react';
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
-import { GiNextButton, GiPreviousButton } from 'react-icons/gi';
+import { MdNavigateBefore, MdNavigateNext } from 'react-icons/md';
 
 interface HeaderProps {
   handlePrevMonth: () => void;
@@ -21,7 +21,7 @@ const CalendarHeader = ({
           onClick={handlePrevMonth}
           className="p-2 text-gray-400 hover:text-gray-200 transition-colors"
         >
-          <GiPreviousButton className="h-6 w-6" />
+          <MdNavigateBefore className="h-6 w-6" />
         </button>
         <h2 className="text-2xl font-semibold text-gray-100">
           {format(currentDate, 'yyyy년 MMMM', { locale: ko })}
@@ -30,7 +30,7 @@ const CalendarHeader = ({
           onClick={handleNextMonth}
           className="p-2 text-gray-400 hover:text-gray-200 transition-colors"
         >
-          <GiNextButton className="h-6 w-6" />
+          <MdNavigateNext className="h-6 w-6" />
         </button>
       </div>
 
