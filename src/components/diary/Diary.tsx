@@ -1,5 +1,5 @@
-import MarkdownEditor from '@/components/MarkdownEditor';
-import PreviewDiary from '@/components/DiaryPreview';
+import MarkdownEditor from '@/components/diary/MarkdownEditor';
+import PreviewDiary from '@/components/diary/DiaryPreview';
 import Button from '@/components/ui/Button';
 import { formatDate } from '@/utils/formatDate';
 import React, { useState } from 'react';

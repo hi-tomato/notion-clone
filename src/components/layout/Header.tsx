@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import SearchInput from '@/components/SearchInput';
+import SearchInput from '@/components/layout/SearchInput';
 import useAuthStore from '@/store/authStore';
 // import useThemeStore from '@/store/themeStore';
 import { FaCalendarAlt, FaBell } from 'react-icons/fa';

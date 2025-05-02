@@ -4,9 +4,9 @@ import './index.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Dashboard from '@/pages/Dashboard.tsx';
 import NotFound from '@/pages/NotFound.tsx';
-import Diary from '@/components/Diary';
-import Layout from '@/components/Layout';
-import DiaryPreview from '@/components/DiaryPreview';
+import Diary from '@/components/diary/Diary';
+import Layout from '@/components/layout/Layout';
+import DiaryPreview from '@/components/diary/DiaryPreview';
 import Calendar from '@/pages/Calendar';
 
 // interface ProtectedRouteProps {

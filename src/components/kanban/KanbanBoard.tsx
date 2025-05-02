@@ -1,5 +1,5 @@
 // import Diary from '@/components/Diary';
-import KanbanColumn from '@/components/KanbanColumn';
+import KanbanColumn from '@/components/kanban/KanbanColumn';
 import useTodoStore from '@/store/todoStore';
 import { createKanbanColumns } from '@/utils/createKanbanColumns';
 import React, { useEffect, useMemo } from 'react';
