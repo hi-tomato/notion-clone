@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { TodoItem, TodoUpdateInput } from '@/types/todo-type';
 import useTodoStore from '@/store/todoStore';
-import Editor from './diary/IsEditor';
+import Editor from './IsEditor';
 import { BiEdit, BiTrash } from 'react-icons/bi';
 import { formatDate } from '@/utils/formatDate';
 import {

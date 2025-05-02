@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import KanbanBoard from '@/components/kanban/KanbanBoard';
+import KanbanBoard from '@/components/KanbanBoard';
 import TodoModal from '@/components/TodoModal';
 
 const Dashboard = () => {

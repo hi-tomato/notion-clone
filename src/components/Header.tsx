@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import SearchInput from '@/components/layout/SearchInput';
+import SearchInput from '@/components/SearchInput';
 import useAuthStore from '@/store/authStore';
 // import useThemeStore from '@/store/themeStore';
 import { FaCalendarAlt, FaBell } from 'react-icons/fa';
@@ -21,7 +21,7 @@ const Header = () => {
   }, [initAuth]);
 
   return (
-    <header className="app-header sticky top-0 z-10 py-4 px-4 md:px-6 lg:ml-0">
+    <header className="app-header app-header sticky top-0 z-10 py-4 px-4 md:px-6 lg:ml-0">
       <div className="flex justify-between items-center">
         <div className="hidden md:block">
           <h1 className="text-xl md:text-2xl font-bold">
