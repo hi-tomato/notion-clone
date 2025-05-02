@@ -1,11 +1,13 @@
 import React from 'react';
 import { format, isToday, isSameMonth } from 'date-fns';
+import { TodoItem, TodoPriority } from '@/types/todo-type';
 
 interface ContentsProps {
   currentDate: Date;
   calendarMatrix: Date[][];
   selectedDate: Date | null;
   handleDateClick: (date: Date) => void;
+  todos: TodoItem[];
 }
 
 const CalendarContents = ({
@@ -13,7 +15,20 @@ const CalendarContents = ({
   calendarMatrix,
   selectedDate,
   handleDateClick,
+  todos,
 }: ContentsProps) => {
+  const hasTodosForDate = (date: Date, priority: TodoPriority) => {
+    return todos.some((todo) => {
+      const todoDate = new Date(todo.createdAt);
+      return (
+        todoDate.getDate() === date.getDate() &&
+        todoDate.getMonth() === date.getMonth() &&
+        todoDate.getFullYear() === date.getFullYear() &&
+        todo.priority === priority
+      );
+    });
+  };
+
   return (
     <div className="bg-[#23272f] rounded-b-lg shadow-sm">
       <div className="grid grid-cols-7">
@@ -61,7 +76,17 @@ const CalendarContents = ({
               </div>
 
               {/* 이벤트 도트 */}
-              <div className="mt-1 flex justify-center space-x-1"></div>
+              <div className="mt-1 flex justify-center space-x-1">
+                {hasTodosForDate(date, 'high') && (
+                  <div className="w-2 h-2 rounded-full bg-red-500" />
+                )}
+                {hasTodosForDate(date, 'medium') && (
+                  <div className="w-2 h-2 rounded-full bg-yellow-500" />
+                )}
+                {hasTodosForDate(date, 'low') && (
+                  <div className="w-2 h-2 rounded-full bg-green-500" />
+                )}
+              </div>
             </div>
           );
         })}

@@ -1,6 +1,7 @@
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
 import Select from '@/components/ui/Select';
+import useToast from '@/store/toastStore';
 import useTodoStore from '@/store/todoStore';
 import { TodoCategory, TodoPriority, TodoStatus } from '@/types/todo-type';
 import React, { useState } from 'react';
@@ -9,6 +10,7 @@ import { v4 as uuidv4 } from 'uuid';
 interface TodoModalProps {
   modalStatus: boolean;
   closeModal: () => void;
+  showToast?: (message: string, type: 'success' | 'error' | 'info') => void;
 }
 
 const TodoModal = ({ modalStatus, closeModal }: TodoModalProps) => {
@@ -40,6 +42,8 @@ const TodoModal = ({ modalStatus, closeModal }: TodoModalProps) => {
     setPriority('medium');
     setCategory('work');
     setStatus('todo');
+
+    useToast.getState().showToast('할 일이 추가되었습니다', 'success');
 
     closeModal();
   };
