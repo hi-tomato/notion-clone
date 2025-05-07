@@ -9,13 +9,13 @@ import Layout from '@/components/Layout';
 import DiaryPreview from '@/components/DiaryPreview';
 import Calendar from '@/pages/Calendar';
 
-// interface ProtectedRouteProps {
-//   children: ReactNode;
-// }
+interface ProtectedRouteProps {
+  children: ReactNode;
+}
 
-// const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
-//   return <>{children}</>;
-// };
+const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
+  return <>{children}</>;
+};
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
