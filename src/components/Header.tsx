@@ -3,7 +3,7 @@ import SearchInput from '@/components/SearchInput';
 import useAuthStore from '@/store/authStore';
 // import useThemeStore from '@/store/themeStore';
 import { FaCalendarAlt, FaBell } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Button from '@/components/ui/Button';
 
 const Header = () => {
@@ -12,6 +12,7 @@ const Header = () => {
   const handleSearch = (query: string) => {
     console.log('Searching for:', query);
   };
+  const navigate = useNavigate();
 
   useEffect(() => {
     const unsubscribe = initAuth();
@@ -41,6 +42,7 @@ const Header = () => {
           <Button
             type="button"
             className="icon-button p-2 rounded-full transition-colors"
+            onClick={() => navigate('/calendar')}
           >
             <FaCalendarAlt />
           </Button>

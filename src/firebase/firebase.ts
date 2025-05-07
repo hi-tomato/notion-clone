@@ -77,12 +77,21 @@ type TodoUpdateData = {
   [key: string]: void;
 };
 
-export const todosCollection = collection(db, 'todos');
+export const getUserTodosCollection = (userId: string) => {
+  return collection(db, 'users', userId, 'todos');
+};
+// export const todosCollection = collection(db, 'todos');
 
 export const addTodoDocument = async (data: TodoItem) => {
+  const user = auth.currentUser;
+  if (!user) {
+    throw new Error('사용자가 로그인되어 있지 않습니다.');
+  }
+
   console.log('Adding todo with data:', data);
   try {
-    const docRef = await addDoc(todosCollection, data);
+    const userTodosCollection = getUserTodosCollection(user.uid);
+    const docRef = await addDoc(userTodosCollection, data);
     console.log('Document added with ID:', docRef.id);
     return docRef;
   } catch (error) {
@@ -92,9 +101,13 @@ export const addTodoDocument = async (data: TodoItem) => {
 };
 
 export const getTodoDocument = async (): Promise<TodoItem[]> => {
+  const user = auth.currentUser;
+
+  if (!user) throw new Error('사용자가 로그인되지 않았습니다.');
   console.log('서버 데이터 찾아보기...');
   try {
-    const querySnapshot = await getDocs(todosCollection);
+    const userTodosCollection = getUserTodosCollection(user.uid);
+    const querySnapshot = await getDocs(userTodosCollection);
     console.log('서버데이터 스냅샷:', querySnapshot);
 
     const todos: TodoItem[] = [];
@@ -139,11 +152,13 @@ export const updateTodoDocument = async (
   id: string,
   data: TodoUpdateData
 ): Promise<void> => {
+  const user = auth.currentUser;
+  if (!user) throw new Error('사용자가 로그인되지 않았습니다.');
   console.log('Updating todo with ID:', id);
   console.log('Update data:', data);
 
   try {
-    const docRef = doc(todosCollection, id);
+    const docRef = doc(db, 'users', user.uid, 'todos', id);
     const result = await updateDoc(docRef, data);
     console.log('Update successful');
     return result;
@@ -154,16 +169,28 @@ export const updateTodoDocument = async (
 };
 
 export const deleteTodoDocument = async (id: string) => {
-  return await deleteDoc(doc(todosCollection, id));
+  const user = auth.currentUser;
+  if (!user) throw new Error('사용자가 로그인되어 있지 않습니다.');
+  try {
+    const docRef = doc(db, 'users', user.uid, 'todos', id);
+    return await deleteDoc(docRef);
+  } catch (error) {
+    console.error('Error deleting document:', error);
+    throw error;
+  }
 };
 
 export const diaryCollection = collection(db, 'diary');
 
 export const getDiaryDocument = async () => {
+  const user = auth.currentUser;
+  if (!user) throw new Error('사용자가 로그인되어 있지 않습니다.');
+
   console.log('서버 데이터 찾아보기...');
 
   try {
-    const querySnapshot = await getDocs(diaryCollection);
+    const userDiaryCollection = collection(db, 'users', user.uid, 'diary');
+    const querySnapshot = await getDocs(userDiaryCollection);
     console.log('서버데이터 스냅샷:', querySnapshot);
     const diaries: DiaryItem[] = [];
 
