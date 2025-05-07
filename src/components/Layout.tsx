@@ -3,7 +3,6 @@ import React from 'react';
 import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import useAuthStore from '@/store/authStore';
-import Button from '@/components/ui/Button';
 import Login from '@/pages/Login';
 
 const Layout = () => {

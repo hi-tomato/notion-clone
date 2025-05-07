@@ -2,23 +2,16 @@ import React from 'react';
 import {
   FaHome,
   FaCalendarAlt,
-  FaCog,
   FaUsers,
-  FaFolder,
   FaSignOutAlt,
-  FaSun,
-  FaMoon,
   FaSignInAlt,
 } from 'react-icons/fa';
 import useAuthStore from '@/store/authStore';
-import useThemeStore from '@/store/themeStore';
-import useDarkModeToggle from '@/hooks/useDarkModeToggle';
 import { FaPencil } from 'react-icons/fa6';
 const Sidebar = () => {
   const user = useAuthStore((state) => state.user);
   const login = useAuthStore((state) => state.login);
   const logout = useAuthStore((state) => state.logout);
-  const { darkMode, toggleDarkMode } = useThemeStore();
 
   // menuItems 수정
   const menuItems = [
@@ -26,23 +19,7 @@ const Sidebar = () => {
     { icon: <FaPencil />, label: 'TIL', path: '/diary' },
     { icon: <FaCalendarAlt />, label: '캘린더', path: '/calendar' },
     { icon: <FaUsers />, label: '사용자', path: '/users' },
-    { icon: <FaFolder />, label: '문서', path: '/documents' },
-    { icon: <FaCog />, label: '설정', path: '/settings' },
-
-    {
-      icon: darkMode ? (
-        <FaSun className="text-yellow-500" />
-      ) : (
-        <FaMoon className="text-gray-700" />
-      ),
-      label: darkMode ? '라이트 모드' : '다크 모드',
-      onClick: toggleDarkMode,
-      path: '#',
-    },
   ];
-
-  // 🚀 useDarkModeToggle - useEffect Hook
-  useDarkModeToggle();
 
   return (
     <div className="flex flex-col h-full py-6">

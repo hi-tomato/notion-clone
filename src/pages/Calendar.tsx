@@ -43,6 +43,7 @@ export default function Calendar() {
         showToast={(message, type) =>
           useToast.getState().showToast(message, type)
         }
+        selectedDate={selectedDate}
       />
     );
 

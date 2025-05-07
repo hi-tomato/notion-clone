@@ -11,6 +11,7 @@ interface TodoModalProps {
   modalStatus: boolean;
   closeModal: () => void;
   showToast?: (message: string, type: 'success' | 'error' | 'info') => void;
+  selectedDate?: Date | null;
 }
 
 const TodoModal = ({ modalStatus, closeModal }: TodoModalProps) => {
@@ -111,6 +112,7 @@ const TodoModal = ({ modalStatus, closeModal }: TodoModalProps) => {
             ]}
             className="w-full px-3 py-2 border border-[var(--card-border)] rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 bg-[var(--bg)]"
           />
+
           <Select<TodoCategory>
             label="카테고리"
             value={category}

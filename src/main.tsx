@@ -16,6 +16,7 @@ import DiaryPreview from '@/components/DiaryPreview';
 import Calendar from '@/pages/Calendar';
 import useAuthStore from '@/store/authStore';
 import Login from '@/pages/Login';
+import User from '@/pages/User';
 
 interface ProtectedRouteProps {
   children: ReactNode;
@@ -58,6 +59,14 @@ createRoot(document.getElementById('root')!).render(
             element={
               <ProtectedRoute>
                 <Calendar />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/users"
+            element={
+              <ProtectedRoute>
+                <User />
               </ProtectedRoute>
             }
           />

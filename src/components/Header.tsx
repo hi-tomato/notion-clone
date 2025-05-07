@@ -2,9 +2,10 @@ import React, { useEffect } from 'react';
 import SearchInput from '@/components/SearchInput';
 import useAuthStore from '@/store/authStore';
 // import useThemeStore from '@/store/themeStore';
-import { FaCalendarAlt, FaBell } from 'react-icons/fa';
+import { FaCalendarAlt, FaBell, FaHamburger } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import Button from '@/components/ui/Button';
+import { GiHamburgerMenu } from 'react-icons/gi';
 
 const Header = () => {
   const user = useAuthStore((state) => state.user);
@@ -49,9 +50,10 @@ const Header = () => {
 
           <Button
             type="button"
-            className="icon-button p-2 rounded-full transition-colors"
+            className="sm:hidden icon-button p-2 rounded-full transition-colors"
+            // onClick={}
           >
-            <FaBell />
+            <GiHamburgerMenu />
           </Button>
 
           {user && (

@@ -23,6 +23,8 @@ import {
   updateDoc,
   deleteDoc,
   getDocs,
+  getCountFromServer,
+  setDoc,
 } from 'firebase/firestore';
 
 const firebaseConfig = {
@@ -44,6 +46,25 @@ export const login = async (): Promise<User | null> => {
     const result = await signInWithPopup(auth, provider);
     const user = result.user;
     console.log('로그인 성공 :', user);
+
+    // 사용자 문서 생성 또는 업데이트
+    try {
+      const userDocRef = doc(db, 'users', user.uid);
+      await setDoc(
+        userDocRef,
+        {
+          email: user.email,
+          displayName: user.displayName,
+          photoURL: user.photoURL,
+          lastLogin: new Date(),
+        },
+        { merge: true }
+      );
+      console.log('사용자 문서가 생성/업데이트되었습니다.');
+    } catch (error) {
+      console.error('사용자 문서 생성 중 오류:', error);
+    }
+
     return user;
   } catch (error: unknown) {
     if (error instanceof FirebaseError) {
@@ -80,8 +101,8 @@ type TodoUpdateData = {
 export const getUserTodosCollection = (userId: string) => {
   return collection(db, 'users', userId, 'todos');
 };
-// export const todosCollection = collection(db, 'todos');
 
+// TODO: 상태 업데이트 (추가,삭제,업데이트)
 export const addTodoDocument = async (data: TodoItem) => {
   const user = auth.currentUser;
   if (!user) {
@@ -180,6 +201,7 @@ export const deleteTodoDocument = async (id: string) => {
   }
 };
 
+// Diary 데이터 추가
 export const diaryCollection = collection(db, 'diary');
 
 export const getDiaryDocument = async () => {
@@ -211,5 +233,30 @@ export const getDiaryDocument = async () => {
   } catch (error) {
     console.error('서버에서 데이터 받는데 문제가 생김', error);
     throw error;
+  }
+};
+
+// 총 사용자가 몇명인지
+// type UserCountResult =
+//   | { success: boolean; error: string; count: null }
+//   | { success: boolean; count: number; timestamp: Date };
+
+export const getUserCount = async () => {
+  const user = auth.currentUser;
+  console.log('현재 인증된 사용자:', user ? user.uid : '없음');
+
+  if (!user) return null;
+
+  const usersCollectionRef = collection(db, 'users');
+  try {
+    console.log('사용자 컬렉션 경로:', usersCollectionRef.path);
+    const snapshot = await getCountFromServer(usersCollectionRef);
+    console.log('조회 결과:', snapshot.data());
+    return snapshot;
+  } catch (error) {
+    console.error(
+      '총 유저의 숫자를 가져오는 중, 오류가 발생하였습니다.',
+      error
+    );
   }
 };

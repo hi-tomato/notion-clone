@@ -1,49 +1,20 @@
 @import 'tailwindcss';
 
 :root {
-  --bg: #ffffff;
-  --bg-sidebar: #f4f4f4;
-  --text: #1e1f25;
-  --text-sub: #4f4f4f;
-  --accent-blue: #377dff;
-  --accent-green: #58c472;
-  --accent-orange: #f1a60d;
-  --accent-red: #ef5c5c;
-
-  /* 추가 변수들 */
-  --header-bg: #ffffff;
-  --header-border: #e5e7eb;
-  --card-bg: #ffffff;
-  --card-border: #e5e7eb;
-  --card-shadow: rgba(0, 0, 0, 0.05);
-  --column-bg: #f3f4f6;
-  --column-header-bg: #f9fafb;
-  --hover-bg: #f3f4f6;
-  --icon-color: #4b5563;
-  --icon-hover: #f3f4f6;
-  --todo-column: #dbeafe;
-  --progress-column: #fef3c7;
-  --done-column: #d1fae5;
-  --empty-text: #9ca3af;
-  --button-primary-bg: var(--accent-blue);
-  --button-primary-text: #ffffff;
-}
-
-body.dark-mode {
-  --bg: #141417; /* 콘텐츠 영역 */
-  --bg-sidebar: #1e1e24; /* 사이드바 - 가장 어두운 톤 */
+  --bg: #141417;
+  --bg-sidebar: #1e1e24;
   --text: #d1d5db;
   --text-sub: #9ca3af;
 
-  --header-bg: #2a2a31; /* 상단 헤더 - 콘텐츠 영역과 통일 */
+  --header-bg: #2a2a31;
   --header-border: #2c2f36;
 
-  --card-bg: #33333d; /* 작업 카드 내부 - 더 밝은 회색 톤 */
+  --card-bg: #33333d;
   --card-border: #2c2f36;
   --card-shadow: rgba(0, 0, 0, 0.4);
 
-  --column-bg: #2a2a31; /* 콘텐츠 영역과 통일 */
-  --column-header-bg: #33333d; /* 카드와 비슷한 톤 */
+  --column-bg: #2a2a31;
+  --column-header-bg: #33333d;
 
   --hover-bg: #33333d;
 
@@ -55,6 +26,9 @@ body.dark-mode {
   --done-column: #1a4532;
 
   --empty-text: #6b7280;
+
+  --button-primary-bg: #377dff;
+  --button-primary-text: #ffffff;
 }
 
 body {
@@ -68,32 +42,27 @@ button {
   cursor: pointer;
 }
 
-/* 헤더 스타일 */
 .app-header {
-  background-color: var(--header-bg);
-  color: var(--text);
-  border-bottom: 1px solid var(--header-border);
+  background-color: #1b1b2c;
+  color: #ffffff;
+  border-bottom: 1px solid #ffffff15;
   transition: background-color 0.3s ease, color 0.3s ease,
     border-color 0.3s ease;
 }
 
-/* 검색 입력 스타일 */
 .search-input {
   background-color: var(--bg);
   color: var(--text);
   border: 1px solid var(--card-border);
 }
 
-/* 아이콘 버튼 스타일 */
 .icon-button {
   color: var(--icon-color);
 }
-
 .icon-button:hover {
   background-color: var(--icon-hover);
 }
 
-/* 칸반 칼럼 스타일 */
 .kanban-column {
   background-color: var(--column-bg);
   border-radius: 0.5rem;
@@ -101,24 +70,19 @@ button {
 }
 
 .kanban-column-header {
-  /* background-color: var(--column-header-bg); */
   color: var(--text);
   border-bottom: 1px solid var(--card-border);
 }
-
 .kanban-column-todo .kanban-column-header {
   background-color: var(--todo-column);
 }
-
 .kanban-column-inProgress .kanban-column-header {
   background-color: var(--progress-column);
 }
-
 .kanban-column-done .kanban-column-header {
   background-color: var(--done-column);
 }
 
-/* 투두 카드 스타일 */
 .todo-card {
   background-color: var(--card-bg);
   color: var(--text);
@@ -126,14 +90,19 @@ button {
   box-shadow: 0 1px 2px var(--card-shadow);
   transition: transform 0.2s, box-shadow 0.2s;
 }
-
 .todo-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 6px var(--card-shadow);
 }
 
-/* 빈 상태 메시지 */
 .empty-state {
   color: var(--empty-text);
   border: 2px dashed var(--card-border);
+}
+
+input[type='date']::-webkit-calendar-picker-indicator,
+input[type='time']::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  display: none;
+  -webkit-appearance: none;
 }
