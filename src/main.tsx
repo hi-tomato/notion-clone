@@ -18,6 +18,7 @@ import useAuthStore from '@/store/authStore';
 import Login from '@/pages/Login';
 import User from '@/pages/User';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import CustomCursor from './hooks/CustomCursor';
 
 interface ProtectedRouteProps {
   children: ReactNode;
@@ -45,6 +46,7 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
+        <CustomCursor />
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Dashboard />} />
