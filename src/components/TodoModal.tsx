@@ -32,9 +32,6 @@ const TodoModal = ({
     if (title.trim().length === 0) return;
 
     const todoDate = selectedDate || new Date();
-    console.log('TodoModal - 선택된 날짜:', selectedDate);
-    console.log('TodoModal - 실제 사용될 날짜:', todoDate);
-
     addTodo(
       {
         id: uuidv4(),

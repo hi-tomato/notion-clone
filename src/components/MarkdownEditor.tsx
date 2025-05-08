@@ -27,7 +27,6 @@ const MarkdownEditor: React.FC = () => {
     setMarkDownText(markDownText);
     setTags(tags);
     navigate('/diary/preview');
-    console.log('미리보기 데이터를 보냈습니다.', { markDownText, tags });
   };
 
   const handleSaved = async () => {

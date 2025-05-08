@@ -17,6 +17,7 @@ import Calendar from '@/pages/Calendar';
 import useAuthStore from '@/store/authStore';
 import Login from '@/pages/Login';
 import User from '@/pages/User';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 interface ProtectedRouteProps {
   children: ReactNode;
@@ -31,50 +32,60 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   }
   return <>{children}</>;
 };
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 10 * 60 * 1000, // 10분
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Dashboard />} />
-          <Route
-            path="/diary"
-            element={
-              <ProtectedRoute>
-                <Diary />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/diary/preview"
-            element={
-              <ProtectedRoute>
-                <DiaryPreview />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/calendar"
-            element={
-              <ProtectedRoute>
-                <Calendar />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/users"
-            element={
-              <ProtectedRoute>
-                <User />
-              </ProtectedRoute>
-            }
-          />
-          <Route path="/login" element={<Login />} />
-        </Route>
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Dashboard />} />
+            <Route
+              path="/diary"
+              element={
+                <ProtectedRoute>
+                  <Diary />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/diary/preview"
+              element={
+                <ProtectedRoute>
+                  <DiaryPreview />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/calendar"
+              element={
+                <ProtectedRoute>
+                  <Calendar />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/users"
+              element={
+                <ProtectedRoute>
+                  <User />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="/login" element={<Login />} />
+          </Route>
 
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </BrowserRouter>
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
+    </QueryClientProvider>
   </StrictMode>
 );

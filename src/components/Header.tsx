@@ -2,13 +2,13 @@ import React, { useEffect } from 'react';
 import SearchInput from '@/components/SearchInput';
 import useAuthStore from '@/store/authStore';
 // import useThemeStore from '@/store/themeStore';
-import { FaCalendarAlt, FaBell, FaHamburger } from 'react-icons/fa';
+import { FaCalendarAlt } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import Button from '@/components/ui/Button';
 import { GiHamburgerMenu } from 'react-icons/gi';
+import NotificationContainer from '@/components/NotificationContainer';
 
 const Header = () => {
-  const user = useAuthStore((state) => state.user);
   const initAuth = useAuthStore((state) => state.initAuth);
   const handleSearch = (query: string) => {
     console.log('Searching for:', query);
@@ -48,6 +48,9 @@ const Header = () => {
             <FaCalendarAlt />
           </Button>
 
+          {/* Bell-icon */}
+          <NotificationContainer />
+
           <Button
             type="button"
             className="sm:hidden icon-button p-2 rounded-full transition-colors"
@@ -55,17 +58,6 @@ const Header = () => {
           >
             <GiHamburgerMenu />
           </Button>
-
-          {user && (
-            <div className="hidden md:flex items-center space-x-2">
-              <img
-                src={user.photoURL || '/default-avatar.png'}
-                alt={user.displayName || 'User Profile'}
-                className="w-8 h-8 md:w-10 md:h-10 rounded-full object-cover border border-transparent"
-              />
-              <h2 className="text-sm font-medium">{user.displayName}</h2>
-            </div>
-          )}
         </div>
       </div>
     </header>

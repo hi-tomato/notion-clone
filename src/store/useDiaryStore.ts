@@ -46,7 +46,6 @@ const useDiaryStore = create<DiaryState>((set, get) => ({
 
     try {
       const docRef = await addDoc(diaryCollection, newDiary);
-      console.log('다이어리가 성공적으로 저장되었습니다:', docRef.id);
       return docRef.id;
     } catch (error) {
       console.error('다이어리 저장 실패:', error);

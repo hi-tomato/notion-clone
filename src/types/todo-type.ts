@@ -13,6 +13,7 @@ export interface TodoItem {
   dueDate?: Date | string;
   progress?: number;
   order?: number;
+  completed?: boolean;
 }
 
 export interface NewTodoInput {

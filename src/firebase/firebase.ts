@@ -45,8 +45,6 @@ export const login = async (): Promise<User | null> => {
   try {
     const result = await signInWithPopup(auth, provider);
     const user = result.user;
-    console.log('로그인 성공 :', user);
-
     // 사용자 문서 생성 또는 업데이트
     try {
       const userDocRef = doc(db, 'users', user.uid);
@@ -60,7 +58,6 @@ export const login = async (): Promise<User | null> => {
         },
         { merge: true }
       );
-      console.log('사용자 문서가 생성/업데이트되었습니다.');
     } catch (error) {
       console.error('사용자 문서 생성 중 오류:', error);
     }
@@ -93,7 +90,7 @@ export const onUserStateChange = (
 };
 
 // Firebase Utility Function
-const db = getFirestore(app);
+export const db = getFirestore(app);
 type TodoUpdateData = {
   [key: string]: void;
 };
@@ -109,17 +106,16 @@ export const addTodoDocument = async (data: TodoItem) => {
     throw new Error('사용자가 로그인되어 있지 않습니다.');
   }
 
-  console.log('Adding todo with data:', data);
-
   const firebaseData = {
     ...data,
+    userId: user.uid,
+    completed: false,
     createdAt: data.createdAt,
     dueDate: data.dueDate || data.createdAt,
   };
   try {
     const userTodosCollection = getUserTodosCollection(user.uid);
     const docRef = await addDoc(userTodosCollection, firebaseData);
-    console.log('Document added with ID:', docRef.id);
     return docRef;
   } catch (error) {
     console.error('Error adding document:', error);
@@ -131,11 +127,9 @@ export const getTodoDocument = async (): Promise<TodoItem[]> => {
   const user = auth.currentUser;
 
   if (!user) throw new Error('사용자가 로그인되지 않았습니다.');
-  console.log('서버 데이터 찾아보기...');
   try {
     const userTodosCollection = getUserTodosCollection(user.uid);
     const querySnapshot = await getDocs(userTodosCollection);
-    console.log('서버데이터 스냅샷:', querySnapshot);
 
     const todos: TodoItem[] = [];
     querySnapshot.forEach((doc) => {
@@ -181,13 +175,10 @@ export const updateTodoDocument = async (
 ): Promise<void> => {
   const user = auth.currentUser;
   if (!user) throw new Error('사용자가 로그인되지 않았습니다.');
-  console.log('Updating todo with ID:', id);
-  console.log('Update data:', data);
 
   try {
     const docRef = doc(db, 'users', user.uid, 'todos', id);
     const result = await updateDoc(docRef, data);
-    console.log('Update successful');
     return result;
   } catch (error) {
     console.error('Error updating document:', error);
@@ -214,18 +205,13 @@ export const getDiaryDocument = async () => {
   const user = auth.currentUser;
   if (!user) throw new Error('사용자가 로그인되어 있지 않습니다.');
 
-  console.log('서버 데이터 찾아보기...');
-
   try {
     const userDiaryCollection = collection(db, 'users', user.uid, 'diary');
     const querySnapshot = await getDocs(userDiaryCollection);
-    console.log('서버데이터 스냅샷:', querySnapshot);
     const diaries: DiaryItem[] = [];
 
     querySnapshot.forEach((doc) => {
       const data = doc.data();
-      console.log('Processed todos:', data);
-
       const diaryItem: DiaryItem = {
         id: doc.id as string,
         tags: data.tags as string,
@@ -242,22 +228,13 @@ export const getDiaryDocument = async () => {
   }
 };
 
-// 총 사용자가 몇명인지
-// type UserCountResult =
-//   | { success: boolean; error: string; count: null }
-//   | { success: boolean; count: number; timestamp: Date };
-
 export const getUserCount = async () => {
   const user = auth.currentUser;
-  console.log('현재 인증된 사용자:', user ? user.uid : '없음');
-
   if (!user) return null;
 
   const usersCollectionRef = collection(db, 'users');
   try {
-    console.log('사용자 컬렉션 경로:', usersCollectionRef.path);
     const snapshot = await getCountFromServer(usersCollectionRef);
-    console.log('조회 결과:', snapshot.data());
     return snapshot;
   } catch (error) {
     console.error(

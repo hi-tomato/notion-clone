@@ -34,7 +34,6 @@ const CalendarDateCell = ({
     `}
     >
       <div
-        onClick={(e) => console.log(e.currentTarget)}
         className={`flex items-center justify-center h-8 w-8 mx-auto rounded-full text-sm
         ${isSelected ? 'bg-blue-500 text-white' : ''}
         ${

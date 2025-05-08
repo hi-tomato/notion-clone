@@ -7,7 +7,6 @@ import Login from '@/pages/Login';
 
 const Layout = () => {
   const user = useAuthStore((state) => state.user);
-  console.log(user);
   return (
     <div className="min-h-screen flex flex-col bg-gray-900 text-white">
       <Header />

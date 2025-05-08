@@ -65,7 +65,8 @@ const User = () => {
       {/* 총 사용자 수 */}
       <div className="mb-8 text-center">
         <h2 className="text-2xl font-semibold flex items-center justify-center gap-2 text-[var(--text)]">
-          <FiUsers className="w-6 h-6 text-[var(--accent-blue)]" />총 사용자
+          <FiUsers className="w-6 h-6 text-[var(--accent-blue)]" />
+          현재 어플 총 사용자
         </h2>
         <p className="mt-2 text-4xl font-bold text-[var(--accent-blue)]">
           {count}명
