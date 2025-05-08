@@ -1,6 +1,5 @@
 import { CalendarCellProps } from '@/types/calendar';
-// import { TodoPriority } from '@/types/todo-type';
-import { format, isToday } from 'date-fns';
+import { format, isToday, isSameDay } from 'date-fns'; // isSameDay 추가
 import React, { useMemo } from 'react';
 import CalendarTooltip from './CalendarTooltip';
 import CalendarDots from './CalendarDots';
@@ -18,11 +17,7 @@ const CalendarDateCell = ({
   const todosForDate = useMemo(() => {
     return todos.filter((todo) => {
       const todoDate = new Date(todo.createdAt);
-      return (
-        todoDate.getDate() === date.getDate() &&
-        todoDate.getMonth() === date.getMonth() &&
-        todoDate.getFullYear() === date.getFullYear()
-      );
+      return isSameDay(todoDate, date);
     });
   }, [todos, date]);
 
@@ -39,6 +34,7 @@ const CalendarDateCell = ({
     `}
     >
       <div
+        onClick={(e) => console.log(e.currentTarget)}
         className={`flex items-center justify-center h-8 w-8 mx-auto rounded-full text-sm
         ${isSelected ? 'bg-blue-500 text-white' : ''}
         ${

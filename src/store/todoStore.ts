@@ -29,7 +29,9 @@ const useTodoStore = create<TodoStore>()(
       addTodo: async (todo, selectedDate) => {
         const newTodo = {
           ...todo,
-          createdAt: new Date().toISOString(),
+          createdAt: selectedDate
+            ? selectedDate.toISOString()
+            : new Date().toISOString(),
           dueDate: selectedDate
             ? selectedDate.toISOString()
             : new Date().toISOString(),
@@ -37,7 +39,6 @@ const useTodoStore = create<TodoStore>()(
 
         try {
           const docRef = await addTodoDocument(newTodo);
-          // 로컬 상태 업데이트 (Firebase에서 생성된 ID 사용)
           set((state) => ({
             todos: [...state.todos, { ...newTodo, id: docRef.id }],
           }));
@@ -73,7 +74,6 @@ const useTodoStore = create<TodoStore>()(
       },
 
       //🚀 [Drag&Drop Refactor]
-      // dragOverItem 타입을 추가해줘야함.
       setDragOverItemId: (id) => set({ dragOverItemId: id }),
 
       updateTodoOrder: (updates) =>

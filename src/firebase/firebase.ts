@@ -110,9 +110,15 @@ export const addTodoDocument = async (data: TodoItem) => {
   }
 
   console.log('Adding todo with data:', data);
+
+  const firebaseData = {
+    ...data,
+    createdAt: data.createdAt,
+    dueDate: data.dueDate || data.createdAt,
+  };
   try {
     const userTodosCollection = getUserTodosCollection(user.uid);
-    const docRef = await addDoc(userTodosCollection, data);
+    const docRef = await addDoc(userTodosCollection, firebaseData);
     console.log('Document added with ID:', docRef.id);
     return docRef;
   } catch (error) {

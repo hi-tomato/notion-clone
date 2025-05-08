@@ -14,11 +14,15 @@ interface TodoModalProps {
   selectedDate?: Date | null;
 }
 
-const TodoModal = ({ modalStatus, closeModal }: TodoModalProps) => {
+const TodoModal = ({
+  modalStatus,
+  closeModal,
+  selectedDate,
+}: TodoModalProps) => {
   const addTodo = useTodoStore((state) => state.addTodo);
 
   const [title, setTitle] = useState<string>('');
-  const [description, setDescription] = useState('');
+  const [description, setDescription] = useState<string>('');
   const [status, setStatus] = useState<TodoStatus>('todo');
   const [priority, setPriority] = useState<TodoPriority>('medium');
   const [category, setCategory] = useState<TodoCategory>('work');
@@ -27,15 +31,23 @@ const TodoModal = ({ modalStatus, closeModal }: TodoModalProps) => {
     e.preventDefault();
     if (title.trim().length === 0) return;
 
-    addTodo({
-      id: uuidv4(),
-      title,
-      description,
-      status,
-      priority,
-      category,
-      createdAt: new Date(),
-    });
+    const todoDate = selectedDate || new Date();
+    console.log('TodoModal - 선택된 날짜:', selectedDate);
+    console.log('TodoModal - 실제 사용될 날짜:', todoDate);
+
+    addTodo(
+      {
+        id: uuidv4(),
+        title,
+        description,
+        status,
+        priority,
+        category,
+        createdAt: todoDate,
+        // dueDate: todoDate,
+      },
+      todoDate
+    );
 
     // 폼 초기화
     setTitle('');
