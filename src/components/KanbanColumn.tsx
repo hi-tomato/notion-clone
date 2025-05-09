@@ -1,7 +1,8 @@
 import TodoCard from '@/components/TodoCard';
+import TodoModal from '@/components/TodoModal';
 import useTodoStore from '@/store/todoStore';
 import { TodoItem, TodoStatus } from '@/types/todo-type';
-import React from 'react';
+import React, { useState } from 'react';
 import { BiPlus } from 'react-icons/bi';
 interface KanbanColumnProps {
   title: string;
@@ -18,6 +19,10 @@ const KanbanColumn = ({ title, status, items, color }: KanbanColumnProps) => {
     dragOverItemId,
     setDragOverItemId,
   } = useTodoStore();
+  const [isOpen, setIsOpen] = useState(false);
+  const openModal = () => setIsOpen(true);
+  const closeModal = () => setIsOpen(false);
+
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
     e.dataTransfer.dropEffect = 'move';
@@ -62,7 +67,6 @@ const KanbanColumn = ({ title, status, items, color }: KanbanColumnProps) => {
 
     setDragOverItemId(null);
   };
-
   const sortedItems = [...items].sort(
     (a, b) => (a.order ?? 0) - (b.order ?? 0)
   );
@@ -77,9 +81,19 @@ const KanbanColumn = ({ title, status, items, color }: KanbanColumnProps) => {
         <div className="flex justify-between items-center mb-2">
           <h3 className="font-medium text-gray-200">{title}</h3>
           {status === 'todo' && (
-            <button className="text-gray-400 hover:text-gray-200 transition-colors">
+            <button
+              className="text-gray-400 hover:text-gray-200 transition-colors"
+              onClick={openModal}
+            >
               <BiPlus size={24} />
             </button>
+          )}
+          {isOpen && (
+            <TodoModal
+              modalStatus={isOpen}
+              closeModal={closeModal}
+              selectedDate={new Date()}
+            />
           )}
         </div>
       </div>

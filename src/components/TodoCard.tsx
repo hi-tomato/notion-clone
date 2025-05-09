@@ -50,7 +50,7 @@ const TodoCard = ({ todo }: TodoCardProps) => {
 
   return (
     <div
-      className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-md cursor-move"
+      className="bg-white dark:bg-gray-800 rounded-lg p-1.5 shadow-md cursor-move"
       draggable={true}
       onDragStart={handleDragStart}
       onDragOver={handleDragOver}

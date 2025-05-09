@@ -1,4 +1,3 @@
-// src/components/CustomCursor.tsx
 import React, { useEffect, useRef, useState } from 'react';
 
 interface Position {
@@ -12,7 +11,7 @@ const CustomCursor: React.FC = () => {
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const prevPosRef = useRef<Position>({ x: 0, y: 0 });
 
-  const cursorSize = 64; // 기존 28px에서 40px로 크기 증가
+  const cursorSize = 64; // 기존 28px에서 64px로 크기 증가
 
   const calculateAngle = (prevPos: Position, newPos: Position): number => {
     const dx = newPos.x - prevPos.x;
@@ -30,7 +29,8 @@ const CustomCursor: React.FC = () => {
     document.body.style.cursor = 'none';
 
     const handleMouseMove = (e: MouseEvent) => {
-      const currentPos: Position = { x: e.pageX, y: e.pageY };
+      // clientX/Y를 사용하여 뷰포트 기준 위치를 가져옵니다
+      const currentPos: Position = { x: e.clientX, y: e.clientY };
       setPosition(currentPos);
 
       if (!isVisible) {
@@ -69,8 +69,9 @@ const CustomCursor: React.FC = () => {
 
   if (!isVisible) return null;
 
-  const offsetX = -9 * (cursorSize / 28);
-  const offsetY = -7 * (cursorSize / 28);
+  // 커서 크기에 맞게 오프셋 값을 조정합니다
+  const offsetX = -cursorSize / 3; // 약 -21px
+  const offsetY = -cursorSize / 3; // 약 -21px
 
   return (
     <div

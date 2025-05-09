@@ -58,6 +58,10 @@ const TodoModal = ({
     closeModal();
   };
 
+  const handleClose = () => {
+    closeModal();
+  };
+
   if (!modalStatus) return null;
 
   return (
@@ -66,7 +70,7 @@ const TodoModal = ({
         <div className="flex justify-between items-center p-4 border-b border-[var(--card-border)]">
           <h2 className="text-xl font-bold">New Task</h2>
           <Button
-            onClick={closeModal}
+            onClick={handleClose}
             className="text-gray-500 hover:text-gray-700 text-2xl"
             text="x"
           />

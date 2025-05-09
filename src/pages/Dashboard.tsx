@@ -20,7 +20,7 @@ const Dashboard = () => {
   return (
     <>
       <div className="mb-6 px-4 sm:px-6 lg:px-8">
-        <div className="mb-6 p-2 rounded-xl bg-[#f5f6fa] dark:bg-[#2e2f3e] shadow-sm">
+        <div className="mb-6 p-4 rounded-xl bg-[#f5f6fa] dark:bg-[#2e2f3e] shadow-sm">
           <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
             안녕하세요,{' '}
             <span className=" font-bold">{user?.displayName || '사용자'}</span>
