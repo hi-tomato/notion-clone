@@ -1,12 +1,26 @@
-// components/Login.tsx
+// Login.tsx
 import Button from '@/components/ui/Button';
 import useAuthStore from '@/store/authStore';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { BsGoogle } from 'react-icons/bs';
 import { FiEye } from 'react-icons/fi';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const Login = () => {
-  const login = useAuthStore((state) => state.login);
+  const login = useAuthStore(useCallback((state) => state.login, []));
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleLogin = async () => {
+    try {
+      await login();
+      const from = location.state?.from?.pathname || '/';
+      navigate(from, { replace: true });
+    } catch (error) {
+      console.error('로그인 실패:', error);
+    }
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-black via-[#0f0f1a] to-[#1a1a2e] px-4">
       <div className="w-full max-w-md bg-[#0f0f1a] text-white rounded-2xl p-8 shadow-xl border border-[#2a2a40]">
@@ -21,7 +35,7 @@ const Login = () => {
 
         <button
           className="mt-6 w-full flex items-center justify-center gap-2 bg-transparent border border-gray-600 rounded-md py-2 text-sm hover:bg-gray-800 transition "
-          onClick={login}
+          onClick={handleLogin}
         >
           <BsGoogle className="text-lg" />
           Sign in with Google
@@ -68,7 +82,7 @@ const Login = () => {
           <Button
             className="mt-2 w-full bg-gradient-to-r from-[#6a5af9] to-[#8b5cf6] hover:opacity-90 text-white font-medium py-2 rounded-lg transition"
             text="Sign In"
-            onClick={login}
+            onClick={handleLogin}
           />
         </form>
       </div>
