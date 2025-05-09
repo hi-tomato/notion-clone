@@ -5,7 +5,7 @@ interface Position {
   y: number;
 }
 
-const CustomCursor: React.FC = () => {
+const CustomCursor = () => {
   const [position, setPosition] = useState<Position>({ x: 0, y: 0 });
   const [angle, setAngle] = useState<number>(0);
   const [isVisible, setIsVisible] = useState<boolean>(false);
