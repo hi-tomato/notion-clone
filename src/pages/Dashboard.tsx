@@ -20,8 +20,7 @@ const Dashboard = () => {
   return (
     <>
       <div className="mb-6 px-4 sm:px-6 lg:px-8">
-        {/* 인사말 */}
-        <div className="mb-6 p-4 rounded-xl bg-[#f5f6fa] dark:bg-[#2e2f3e] shadow-sm">
+        <div className="mb-6 p-2 rounded-xl bg-[#f5f6fa] dark:bg-[#2e2f3e] shadow-sm">
           <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
             안녕하세요,{' '}
             <span className=" font-bold">{user?.displayName || '사용자'}</span>
@@ -32,7 +31,6 @@ const Dashboard = () => {
           </p>
         </div>
 
-        {/* 제목 + 버튼 */}
         <div className="flex items-center justify-between mb-4">
           <div>
             <h1 className="text-2xl font-bold text-white mb-1">

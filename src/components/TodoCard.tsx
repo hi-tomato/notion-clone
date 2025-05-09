@@ -57,13 +57,29 @@ const TodoCard = ({ todo }: TodoCardProps) => {
       onDragLeave={handleDragLeave}
     >
       <div className="flex flex-col">
-        <h4 className="text-4xl font-semibold mb-2 text-gray-800 dark:text-white">
+        <span
+          className={`inline-block text-xs font-bold px-2 py-1  rounded-md self-start mb-3 ${
+            todo.priority === 'high'
+              ? 'bg-red-600/10 text-red-500 border border-red-500'
+              : todo.priority === 'medium'
+              ? 'bg-yellow-400/10 text-yellow-400 border border-yellow-400'
+              : 'bg-green-500/10 text-green-400 border border-green-400'
+          }`}
+        >
+          {todo.priority === 'high'
+            ? '🔥 중요'
+            : todo.priority === 'medium'
+            ? '📌 보통'
+            : '✅ 낮음'}
+        </span>
+
+        <h4 className="text-3xl font-semibold mb-1 text-gray-800 dark:text-white">
           {todo.title}
         </h4>
       </div>
 
       {todo.description && (
-        <p className="text-2xl text-gray-600 dark:text-gray-400 mb-3 line-clamp-2">
+        <p className="text-m text-gray-600 dark:text-gray-400 mb-3 line-clamp-2">
           {todo.description}
         </p>
       )}
