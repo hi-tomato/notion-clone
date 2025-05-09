@@ -13,22 +13,28 @@ interface AuthState {
   user: AuthUser | null;
   isLoading: boolean;
   error: string | null;
-  displayName?: string;
-  email?: string;
-  photoURL?: string | null;
-  uid?: string;
 
   initAuth: () => Unsubscribe;
   login: () => Promise<void>;
   logout: () => Promise<void>;
 }
 
+// 인증 리스너가 중복 등록되지 않도록 하는 플래그
+let authListenerInitialized = false;
+
 const useAuthStore = create<AuthState>((set) => ({
   user: null,
-  isLoading: false,
+  isLoading: true,
   error: null,
 
   initAuth: () => {
+    if (authListenerInitialized) {
+      return () => {};
+    }
+
+    authListenerInitialized = true;
+    console.log('Firebase auth listener initialized');
+
     const unsubscribe = onUserStateChange((user: User | null) => {
       if (user) {
         set({
@@ -46,16 +52,17 @@ const useAuthStore = create<AuthState>((set) => ({
       }
     });
 
-    return unsubscribe;
+    return () => {
+      authListenerInitialized = false;
+      unsubscribe();
+    };
   },
 
   login: async (): Promise<void> => {
     set({ isLoading: true, error: null });
     try {
-      const user = await login();
-      if (user) {
-        set({ user, isLoading: false });
-      }
+      await login();
+      // 상태 업데이트는 onUserStateChange에서 처리됨
     } catch (error) {
       set({ error: (error as Error).message, isLoading: false });
       throw error;
@@ -63,9 +70,10 @@ const useAuthStore = create<AuthState>((set) => ({
   },
 
   logout: async (): Promise<void> => {
+    set({ isLoading: true, error: null });
     try {
       await logout();
-      set({ user: null, isLoading: false, error: null });
+      // 상태 업데이트는 onUserStateChange에서 처리됨
     } catch (error) {
       set({ error: (error as Error).message, isLoading: false });
     }

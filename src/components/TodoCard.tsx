@@ -73,13 +73,11 @@ const TodoCard = ({ todo }: TodoCardProps) => {
             : '✅ 낮음'}
         </span>
 
-        <h4 className="text-3xl font-semibold mb-1 text-gray-800 dark:text-white">
-          {todo.title}
-        </h4>
+        <h4 className="text-3xl font-semibold mb-1 text-white">{todo.title}</h4>
       </div>
 
       {todo.description && (
-        <p className="text-m text-gray-600 dark:text-gray-400 mb-3 line-clamp-2">
+        <p className="text-m text-gray-400 mb-3 line-clamp-2">
           {todo.description}
         </p>
       )}
