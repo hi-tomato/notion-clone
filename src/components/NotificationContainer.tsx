@@ -1,4 +1,3 @@
-// NotificationContainer.tsx 수정
 import NotificationPopup from '@/components/NotificationPopup';
 import TodoNotificationIcon from '@/components/TodoNotificationIcon';
 import { useNotificationStore } from '@/store/NotificationStore';

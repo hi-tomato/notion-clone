@@ -54,7 +54,6 @@ const Header = () => {
           <Button
             type="button"
             className="sm:hidden icon-button p-2 rounded-full transition-colors"
-            // onClick={}
           >
             <GiHamburgerMenu />
           </Button>
